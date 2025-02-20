@@ -87,6 +87,12 @@ Lista dos ciclos encontrados de forma clara.
 ✅ **Referências** – Caso tenha sido usado material extra  
 
 ---
+## 🔀 Fluxo de Desenvolvimento
+- Todo o desenvolvimento deve ser feito na **branch `dev`**.
+- Somente após a finalização e revisão, o código será **mesclado na `master`**.
+- Garantir que todas as mudanças foram testadas antes do merge.
+
+---
 ## ✅ Revisão Final e Submissão
 ✔️ Cada membro deve rodar o código para garantir funcionamento  
 ✔️ Conferir organização dos arquivos:  

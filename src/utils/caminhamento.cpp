@@ -3,7 +3,7 @@
 using namespace std;
 
 /**
- * Função auxiliar para o algoritmo DFS (Busca em Profundidade).
+ * Função auxiliar para o algoritmo DFS.
  * 
  * @param adjMatrix Matriz de adjacência do grafo.
  * @param numOfvertices Número de vértices no grafo.
@@ -36,7 +36,17 @@ void DFS(bool** adjMatrix, int numOfvertices, char startVertex) {
   // Vetor para marcar os vértices visitados
   vector<bool> visited(numOfvertices, false);
 
-  // Converte o vértice inicial de char para índice (A -> 0, B -> 1, etc.)
+  // Converte o vértice inicial de char para índice 
+  /* 
+    (
+      A -> 0, 
+      B -> 1, 
+      C -> 2, 
+      D -> 3, 
+      etc.
+    )
+  */
+
   int startIndex = startVertex - 'A';
 
   // Verifica se o vértice inicial é válido

@@ -4,7 +4,7 @@ using namespace std;
 
 void initAdjMatrix(bool** adjMatrix, int numOfvertices) {
 	for (int i = 0; i < numOfvertices; i++) {
-		adjMatrix[i] = new bool[numOfvertices];
+		adjMatrix[i] = new bool[numOfvertices](); 
 	}
 
 	cout << endl << "Enter the adjacency matrix: (v1 v2) (0 0 to stop)" << endl;

@@ -34,3 +34,12 @@
 # Other
 .vscode/
 
+# Ignore files with no extension (compiled C and C++ files)
+*
+!*/
+!*.*
+
+# Ignore Verde CLI's test files
+*.in
+*.out
+*.res.out

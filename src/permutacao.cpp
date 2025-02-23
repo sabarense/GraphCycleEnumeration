@@ -9,9 +9,10 @@ void initAdjMatrix(bool** adjMatrix, int numOfvertices) {
     }
 
     cout << endl << "Enter the adjacency matrix: (v1 v2) (0 0 to stop)" << endl;
+
     char v1, v2;
+    cout << "Enter an edge: ";
     while (true) {
-        cout << "Enter an edge: ";
         cin >> v1 >> v2;
 
         if (v1 == '0' && v2 == '0') {
@@ -88,7 +89,7 @@ int main() {
     int cycleCount = countCyclesPermutation(adjMatrix, numOfvertices);
     findCyclesPermutation(adjMatrix, numOfvertices);
     cout << "\nTotal number of cycles found: " << cycleCount << endl;
-    
+
     for (int i = 0; i < numOfvertices; ++i) delete[] adjMatrix[i];
     delete[] adjMatrix;
     return 0;

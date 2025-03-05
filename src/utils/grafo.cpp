@@ -1,4 +1,5 @@
 #include <iostream>
+#include "grafo.h"
 using namespace std;    
 
 void initAdjMatrix(bool** adjMatrix, int numOfvertices) {

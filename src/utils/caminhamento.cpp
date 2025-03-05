@@ -1,60 +1,68 @@
 #include <iostream>
-#include <vector>
+#include <sstream>
+#include "caminhamento.h"
+
 using namespace std;
 
-/**
- * Função auxiliar para o algoritmo DFS.
- * 
- * @param adjMatrix Matriz de adjacência do grafo.
- * @param numOfvertices Número de vértices no grafo.
- * @param vertex Vértice atual sendo visitado.
- * @param visited Vetor que indica se um vértice foi visitado ou não.
- */
-void DFSUtil(bool** adjMatrix, int numOfvertices, int vertex, vector<bool>& visited) {
-  // Marca o vértice atual como visitado
-  visited[vertex] = true;
-  cout << "Visited vertex: " << char('A' + vertex) << endl;
+void DFSUtil(bool** adjMatrix, int numOfvertices, int vertex, bool* visited, int* path, int pathIndex, int startVertex, string* foundCycles, int& cycleCount) {
+    visited[vertex] = true;
+    path[pathIndex] = vertex;
+    pathIndex++;
 
-  // Percorre todos os vértices adjacentes ao vértice atual
-  for (int i = 0; i < numOfvertices; i++) {
-    // Se houver uma aresta e o vértice ainda não foi visitado
-    if (adjMatrix[vertex][i] && !visited[i]) {
-      DFSUtil(adjMatrix, numOfvertices, i, visited); // Chama DFS recursivamente
+    // Explora todos os vizinhos do vértice atual
+    for (int i = 0; i < numOfvertices; i++) {
+        if (adjMatrix[vertex][i]) { // Se há uma aresta entre vertex -> i
+            if (!visited[i]) {
+                DFSUtil(adjMatrix, numOfvertices, i, visited, path, pathIndex, startVertex, foundCycles, cycleCount);
+            } else if (i == startVertex && pathIndex > 2) {
+                // Encontramos um ciclo válido (volta ao início e tem pelo menos 3 vértices)
+
+                // Usando stringstream para formatar corretamente o ciclo
+                stringstream cycle;
+                for (int j = 0; j < pathIndex; j++) {
+                    cycle << char('A' + path[j]) << " "; // Concatena o vértice atual no ciclo
+                }
+                cycle << char('A' + startVertex); // Fecha o ciclo, incluindo o vértice de início
+                
+                string cycleString = cycle.str(); // Converte para string
+
+                // Verifica se o ciclo já foi encontrado
+                bool cycleFound = false;
+                for (int k = 0; k < cycleCount; k++) {
+                    if (foundCycles[k] == cycleString) {
+                        cycleFound = true;
+                        break;
+                    }
+                }
+
+                if (!cycleFound) {
+                    // Se o ciclo não foi encontrado antes, imprime e armazena
+                    cout << "Cycle found: " << cycleString << endl;
+                    foundCycles[cycleCount] = cycleString; // Armazena o ciclo
+                    cycleCount++; // Incrementa o contador de ciclos encontrados
+                }
+            }
+        }
     }
-  }
+
+    // Retrocede para explorar outros caminhos
+    visited[vertex] = false;
 }
 
-  
-/**
- * Realiza o caminhamento no grafo usando o algoritmo DFS.
- * 
- * @param adjMatrix Matriz de adjacência do grafo.
- * @param numOfvertices Número de vértices no grafo.
- * @param startVertex Vértice inicial para o caminhamento.
- */
-void DFS(bool** adjMatrix, int numOfvertices, char startVertex) {
-  // Vetor para marcar os vértices visitados
-  vector<bool> visited(numOfvertices, false);
 
-  // Converte o vértice inicial de char para índice 
-  /* 
-    (
-      A -> 0, 
-      B -> 1, 
-      C -> 2, 
-      D -> 3, 
-      etc.
-    )
-  */
+void findCyclesDFS(bool** adjMatrix, int numOfvertices) {
+    bool* visited = new bool[numOfvertices](); // Array de vértices visitados
+    int* path = new int[numOfvertices]; // Array para armazenar o caminho atual
+    string* foundCycles = new string[numOfvertices * numOfvertices]; // Array para armazenar ciclos encontrados
+    int cycleCount = 0; // Contador de ciclos encontrados
 
-  int startIndex = startVertex - 'A';
+    // Chama DFS para cada vértice
+    for (int i = 0; i < numOfvertices; i++) {
+        DFSUtil(adjMatrix, numOfvertices, i, visited, path, 0, i, foundCycles, cycleCount);
+    }
 
-  // Verifica se o vértice inicial é válido
-  if (startIndex < 0 || startIndex >= numOfvertices) {
-    cout << "Invalid start vertex!" << endl;
-    return;
-  }
-
-  // Chama a função auxiliar para iniciar o DFS
-  DFSUtil(adjMatrix, numOfvertices, startIndex, visited);
+    // Libera a memória alocada
+    delete[] visited;
+    delete[] path;
+    delete[] foundCycles;
 }
